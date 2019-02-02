@@ -16,10 +16,26 @@
 
 /*:
  * FileName is ZEK_RandomSnippets.js
- * Version is 0.1
+ * Version is 0.2
  * @plugindesc Random Snippets of useful JS.
  * @author Zekromaster
  *
+ *
+ * @help
+ * =========================================
+ * USAGE FOR JS DEVELOPERS
+ * Adds the following accessible value:
+ * ZEK.snippets.criticalFormula:
+ * The current critical formula as a string. Basically the value of the "Critical Formula" parameter.
+ * =========================================
+ * USAGE FOR REGULAR USERS
+ * The "Critical Formula" parameter contains any acceptable JS
+ * evaluable formula. If you installed ZEK_DiceRoller, it
+ * can also contain #_{diceRoll}s.
+ * The "Font Outline Width" parameter is self-explanatory.
+ */
+
+/*
  * @param Critical Formula
  * @desc Formula for critical hits. Use "damage" for damage.
  * @type text
@@ -29,22 +45,17 @@
  * @desc The width of the font outline.
  * @type number
  * @default 4
- *
- *
- *
- * Adds the following accessible value:
- * ZEK.snippets.criticalFormula:
- * The current critical formula as a string. Basically the value of the "Critical Formula" parameter.
  */
 
 // Verifying ZEK_Core exists
-(function() {if (window.ZEK === undefined) alert("You're missing ZEK_Core!")})();
+(function() {
+  if (window.ZEK === undefined) alert("You're missing ZEK_Core!")
+})();
 
 (
   function(_) {
     // Registering the Plugin
-    var P = new ZEK_Plugin("ZEK_RandomSnippets", 0.1);
-    _.definedPlugins.push(P);
+    var P = ZEK_Plugin.register("ZEK_RandomSnippets", 0.2);
 
     // Defining the local namespace
     _.snippets = {};
@@ -57,9 +68,17 @@
 
 
     // Changing Critical Formula
-    Game_Action.prototype.applyCritical = function(damage) {
-      return eval($.criticalFormula);
-    };
+
+
+    if (ZEK_Plugin.isRegistered("ZEK_DiceRoller")) {
+      Game_Action.prototype.applyCritical = function(damage) {
+        return _.roller.eval($.criticalFormula);
+      }
+    } else {
+      Game_Action.prototype.applyCritical = function(damage) {
+        return eval($.criticalFormula);
+      }
+    }
 
     // Removing the Font Outline, conditionally
     var resetFontSettings = Window_Base.prototype.resetFontSettings;
