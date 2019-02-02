@@ -18,7 +18,7 @@
 
 /*:
  * FileName is ZEK_Core.js
- * Version is 0.2
+ * Version is 0.3
  * @plugindesc Does nothing aside from defining some globals for plugin management and some common code.
  * @author Zekromaster
  *
@@ -26,10 +26,14 @@
  * =================================================
  * USAGE FOR JS DEVELOPERS
  * This plugin defines the following global classes:
- * ZEK_Dependency: This class describes a dependency. It has a name, a version and a relationship. See the code for more details.
- * ZEK_Plugin: This class describes a plugin, as a name, version, and list of Dependendencies.
+ * ZEK_Dependency: This class describes a dependency. It has a name,
+ * a version and a relationship. See the code for more details.
+ * ZEK_Plugin: This class describes a plugin, as a name, version, and
+ * list of Dependendencies.
  * It also provides the following functions:
- * ZEK.getSwitch(pSwitch, defaultValue): Returns the value of the switch, or defaultValue (true if defaultValue is missing) if pSwitch is <= 0.
+ * ZEK.getSwitch(pSwitch, defaultValue):
+ * Returns the value of the switch, or defaultValue
+ * (true if defaultValue is missing) if pSwitch is <= 0.
  * =================================================
  */
 
@@ -113,12 +117,12 @@ class ZEK_Plugin {
 (
   function(_) {
     _.definedPlugins = [];
-    ZEK_Plugin.register("ZEK_Core", 0.2) // An array of plugins, specifically of those registered through ZEK_Core
+    ZEK_Plugin.register("ZEK_Core", 0.3) // An array of plugins, specifically of those registered through ZEK_Core
 
     // Utility function: Given a switch, or 0, it returns the value. It always returns defaultValue for 0, or true if defaultValue is missing.
     _.getSwitch = function(pSwitch, defaultValue) {
       if (pSwitch <= 0) return (defaultValue == undefined) ? true : defaultValue;
-      return $gameSwitches.value(defSwitch);
+      return $gameSwitches.value(pSwitch);
     }
   }
 )(ZEK);

@@ -16,11 +16,18 @@
 
 /*:
  * FileName is ZEK_RollizeMessages.js
- * Version is 0.2
+ * Version is 0.3
  * @plugindesc Makes it so messages get all expressions in the form #_{evaluable expression containing XdY} evaluated. Requires DiceRoller.js
  * @author Zekromaster
  *
+ * @param Switch
+ * @desc You may associate this plugin with a switch. In that case, expressions will only be evaluated if the switch is ON.
+ * @type switch
+ *
  * @help
+ * Depends on:
+ * ZEK_Core >= 0.3
+ * ZEK_DiceRoller >= 0.1
  * =======================================
  * USAGE FOR JS DEVELOPERS
  * Literally none
@@ -35,12 +42,6 @@
  * XdY form, and those will be automatically rolled.
  */
 
-/*
- * @param Switch
- * @desc You may associate this plugin with a switch. In that case, expressions will only be evaluated if the switch is ON.
- * @type switch
- */
-
 // Verifying ZEK_Core exists
 (function() {
   if (window.ZEK === undefined) alert("You're missing ZEK_Core!")
@@ -51,10 +52,11 @@
     // Registering the plugin
     var P = ZEK_Plugin.register(
       "ZEK_RollizeMessages",
-      0.2,
+      0.3,
       [
         new ZEK_Dependency("ZEK_DiceRoller", 0.1, ">=")
-      ]
+      ],
+      0.3
     )
 
     // Defining the local namespace

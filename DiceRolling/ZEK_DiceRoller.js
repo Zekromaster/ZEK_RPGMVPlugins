@@ -16,19 +16,24 @@
 
 /*:
  * FileName is ZEK_DiceRoller.js
- * Version is 0.2
+ * Version is 0.3
  * @plugindesc Does some simple dice rolling.
  * @author Zekromaster
  *
  * @help
+ * Depends on:
+ * ZEK_Core >= 0.3
  * =======================================
  * USAGE FOR JS DEVELOPERS
  * ZEK.roller.rollize(string):
- * Takes string and returns the same string, with any dice roll in the form #_{XdY} (or any other evaluable expression) converted to
+ * Takes string and returns the same string, with any dice roll in the
+ * form #_{XdY} (or any other evaluable expression) converted to
  * the same string with all the expressions evaluated and die rolled.
  *
  * ZEK.roller.eval(string):
- * Given a string in the same format as rollize(string) (see above) input, return the result of evuating it as it was one long JS expression
+ * Given a string in the same format as rollize(string)
+ * (see above) input, return the result of evaluating it as
+ * if it was one long JS expression
  * =======================================
  */
 
@@ -40,7 +45,7 @@
 (
   function(_) {
     // Registering the plugin
-    var P = ZEK_Plugin.register("ZEK_DiceRoller", 0.2);
+    var P = ZEK_Plugin.register("ZEK_DiceRoller", 0.3, [], 0.3);
 
     // Defining the local namespace
     _.roller = {};
