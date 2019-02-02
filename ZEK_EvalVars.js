@@ -48,6 +48,11 @@
  * @param Variables
  * @type struct<varAssociation>[]
  * @desc A list of the variables with the associated eval expressions
+ *
+ * @param Enable Dice Rolling
+ * @type boolean
+ * @desc If ZEK_DiceRoller is installed, this decides if expressions should be "rollized".
+ * @default true
  */
 
 
@@ -65,6 +70,11 @@
     _.evalVars = _.evalVars || {};
     var $ = _.evalVars;
 
+    // Reading the parameters
+    var params = PluginManager.parameters(P.name);
+    var evalVarsRaw = params["Variables"];
+    var rollDie = params['Enable Dice Rolling'];
+
     // Making the EvalVar class
     class EvalVar {
       // (number, string) => void
@@ -75,7 +85,7 @@
 
       // void => string
       getEvalExp() {
-        if (ZEK_Plugin.isRegistered("ZEK_DiceRoller")) {
+        if (rollDie && ZEK_Plugin.isRegistered("ZEK_DiceRoller")) {
           return ZEK.roller.rollize(this.evalExpression);
         } else {
           return this.evalExpression;
@@ -95,11 +105,6 @@
         return $.evalVars.find(x => x.variableNumber == varId);
       }
     }
-
-
-    // Reading the parameters
-    var params = PluginManager.parameters(P.name);
-    var evalVarsRaw = params["Variables"];
 
     // Constructing the list of eval vars
     $.evalVars = $.evalVars || [];
