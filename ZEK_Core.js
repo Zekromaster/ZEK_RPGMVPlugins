@@ -15,9 +15,15 @@
 
 /*:
  * FileName is ZEK_Core.js
- * Version is 0.3
+ * Version is 0.4
  * @plugindesc Does nothing aside from defining some globals for plugin management and some common code.
  * @author Zekromaster
+ *
+ * @param Max Save Size
+ * @desc Maximum size of a savefile. 0 for no limit.
+ * @type number
+ * @min 0
+ * @default 0
  *
  * @help
  * =================================================
@@ -114,12 +120,40 @@ class ZEK_Plugin {
 (
   function(_) {
     _.definedPlugins = [];
-    ZEK_Plugin.register("ZEK_Core", 0.3) // An array of plugins, specifically of those registered through ZEK_Core
+    ZEK_Plugin.register("ZEK_Core", 0.4) // An array of plugins, specifically of those registered through ZEK_Core
+
+    // Params
+    var params = PluginManager.parameters("ZEK_Core");
+    _.maxSaveSize = params["Max Save Size"];
 
     // Utility function: Given a switch, or 0, it returns the value. It always returns defaultValue for 0, or true if defaultValue is missing.
     _.getSwitch = function(pSwitch, defaultValue) {
       if (pSwitch <= 0) return (defaultValue == undefined) ? true : defaultValue;
       return $gameSwitches.value(pSwitch);
     }
+
+    // Initialize an array
+    _.initArray = function(size){
+      var arr = [];
+      for (let i = 0; i < size; i++){
+        arr.push(null);
+      }
+      return arr;
+    }
+
+    // We fix saving - by removing that ugly hardcoded value
+    DataManager.saveGameWithoutRescue = function(savefileId) {
+        var json = JsonEx.stringify(this.makeSaveContents());
+        if (_.maxSaveSize > 0 && json.length >= _.maxSaveSize) {
+            console.warn('Save data too big!');
+        }
+        StorageManager.save(savefileId, json);
+        this._lastAccessedId = savefileId;
+        var globalInfo = this.loadGlobalInfo() || [];
+        globalInfo[savefileId] = this.makeSavefileInfo();
+        this.saveGlobalInfo(globalInfo);
+        return true;
+    };
+
   }
 )(ZEK);
